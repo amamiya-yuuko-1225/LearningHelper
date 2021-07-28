@@ -3,9 +3,9 @@ package com.experiment.learinghelper
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class CheckActivity : AppCompatActivity() {
+class MyAccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_check)
+        setContentView(R.layout.activity_my_account)
     }
 }
