@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/high"
+        android:title="高优先级" />
+    <item
+        android:id="@+id/medium"
+        android:title="中优先级" />
+    <item
+        android:id="@+id/low"
+        android:title="低优先级" />
+    <item
+        android:id="@+id/none"
+        android:title="无优先级" />
+
+</menu>
