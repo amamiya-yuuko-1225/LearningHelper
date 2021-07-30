@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     private fun initUI() {
         actionBar!!.hide()
         setNav()
-        setGrade()
     }
      private fun setNav() {
          val navView: BottomNavigationView = findViewById(R.id.nav_view)
@@ -33,18 +32,5 @@ class MainActivity : AppCompatActivity() {
          navView.setupWithNavController(navController)
      }
 
-    private fun setGrade() {
-        grade.text = when( getSharedPreferences(
-            "grade", Context.MODE_PRIVATE).getInt("grade",1)) {
-            1 -> "大一"
-            2 -> "大二"
-            3 -> "大三"
-            4 -> "大四"
-            5 -> "研一"
-            6 -> "研二"
-            7 -> "研三"
-            else -> "大一"
-        }
-    }
 
 }

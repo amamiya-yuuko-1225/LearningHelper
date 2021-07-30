@@ -13,4 +13,5 @@ class ListData:Serializable {
     var month: Int = 1
     var day: Int = 1
     var pri:Int = 0
+    var date:String = ""
 }

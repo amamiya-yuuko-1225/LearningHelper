@@ -40,11 +40,12 @@ class ListActivity : AppCompatActivity() {
             Log.e("room", "initListDone:${listDone.size} " )
             recyclerView_listUndo.let {
                 it.layoutManager = LinearLayoutManager(this)
-                it.adapter = ListAdapter(listUndo,listDao)
+                it.adapter = ListAdapter(listUndo,listDao,false)
+                Log.e("undo", "${it.adapter!!.itemCount}")
             }
             recyclerView_listDone.let {
                 it.layoutManager = LinearLayoutManager(this)
-                it.adapter = ListAdapter(listDone,listDao)
+                it.adapter = ListAdapter(listDone,listDao,true)
             }
         }
     }
@@ -64,6 +65,7 @@ class ListActivity : AppCompatActivity() {
             }
         }
     }
+
 
 
 }

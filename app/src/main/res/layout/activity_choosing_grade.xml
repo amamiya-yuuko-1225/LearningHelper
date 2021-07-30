@@ -9,19 +9,21 @@
 
     <ImageView
         android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24sp"
+        android:layout_height="24sp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/abc_vector_test"
+        android:src="@drawable/back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="填写信息"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="请选择你所在的年级"
+        android:textColor="#000000"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -42,14 +46,19 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
         android:text="本科"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
         android:id="@+id/freshman"
-        android:layout_width="wrap_content"
+        android:text="大一"
+        android:layout_width="400sp"
         android:layout_height="wrap_content"
+        android:background="@drawable/choose_grade_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,72 +66,95 @@
 
     <Button
         android:id="@+id/sophomore"
-        android:layout_width="wrap_content"
+        android:layout_width="400sp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/choose_grade_btn"
+        android:text="大二"
         app:layout_constraintEnd_toEndOf="@+id/freshman"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/freshman"
         app:layout_constraintTop_toBottomOf="@+id/freshman" />
 
     <Button
         android:id="@+id/junior"
-        android:layout_width="wrap_content"
+        android:layout_width="400sp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/choose_grade_btn"
+        android:text="大三"
         app:layout_constraintEnd_toEndOf="@+id/sophomore"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/sophomore"
         app:layout_constraintTop_toBottomOf="@+id/sophomore" />
 
     <Button
         android:id="@+id/senior"
-        android:layout_width="wrap_content"
+        android:layout_width="400sp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/choose_grade_btn"
+        android:text="大四"
         app:layout_constraintEnd_toEndOf="@+id/junior"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/junior"
         app:layout_constraintTop_toBottomOf="@+id/junior" />
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="wrap_content"
+        android:layout_width="400sp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:textSize="20sp"
         android:text="研究生"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/senior" />
 
     <Button
         android:id="@+id/graduate_1"
-        android:layout_width="wrap_content"
+        android:layout_width="400sp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:background="@drawable/choose_grade_btn"
+        android:text="研一"
         app:layout_constraintEnd_toEndOf="@+id/senior"
         app:layout_constraintStart_toStartOf="@+id/senior"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <Button
         android:id="@+id/graduate_2"
-        android:layout_width="wrap_content"
+        android:layout_width="400sp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/choose_grade_btn"
+        android:text="研二"
         app:layout_constraintEnd_toEndOf="@+id/graduate_1"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/graduate_1"
         app:layout_constraintTop_toBottomOf="@+id/graduate_1" />
 
     <Button
         android:id="@+id/graduate_3"
-        android:layout_width="wrap_content"
+        android:layout_width="400sp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/choose_grade_btn"
+        android:text="研三"
         app:layout_constraintEnd_toEndOf="@+id/graduate_1"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/graduate_1"
         app:layout_constraintTop_toBottomOf="@+id/graduate_2" />
 
     <Button
         android:id="@+id/save"
-        android:layout_width="wrap_content"
+        android:textColor="#ffffff"
+        android:layout_width="400sp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/grade_save_btn"
+        android:text="保存"
         app:layout_constraintEnd_toEndOf="@+id/graduate_1"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/graduate_1"
         app:layout_constraintTop_toBottomOf="@+id/graduate_3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

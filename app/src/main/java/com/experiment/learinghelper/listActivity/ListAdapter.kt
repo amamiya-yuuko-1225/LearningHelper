@@ -1,5 +1,6 @@
 package com.experiment.learinghelper.listActivity
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.experiment.learinghelper.R
 import kotlin.concurrent.thread
 
-class ListAdapter(private val list:List<ListData>,private val listDao: ListDao):
+class ListAdapter(private val list:List<ListData>,private val listDao: ListDao,private val done:Boolean):
     RecyclerView.Adapter<ListAdapter.ViewHolder>(){
 
     private val map = HashMap<Int,Boolean>()
@@ -31,18 +32,26 @@ class ListAdapter(private val list:List<ListData>,private val listDao: ListDao):
         val item = list[position]
         holder.date.text = "${item.month}月${item.day}日"
         holder.title.text = item.comment
-        if(item.done) {
-            holder.mCheckBox.isSelected = true
+        if(done) {
             holder.mCheckBox.isEnabled = false
-        }
-        holder.mCheckBox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                map[position] = true
-            } else {
-                map.remove(position)
+            holder.mCheckBox.isChecked = true
+            holder.date.setTextColor(Color.parseColor("#ffcccccc"))
+            holder.title.setTextColor(Color.parseColor("#ffcccccc"))
+        } else {
+            holder.mCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    map[position] = true
+                    item.done = true
+                } else {
+                    map.remove(position)
+                    item.done = false
+                }
+                thread {
+                    listDao.updateUser(item)
+                }
             }
+            holder.mCheckBox.isChecked = map.containsKey(position)
         }
-        holder.mCheckBox.isChecked = map.containsKey(position)
     }
 
 }

@@ -19,6 +19,7 @@ class EditListActivity : AppCompatActivity() {
     private var day = 1
     private var pri:Int = 0
     private var done = false
+    private var today = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_list)
@@ -34,6 +35,7 @@ class EditListActivity : AppCompatActivity() {
         val day: Int = c.get(Calendar.DAY_OF_MONTH)
         val month: Int = c.get(Calendar.MONTH)
         val year: Int = c.get(Calendar.YEAR)
+        today = "$year/$month/$day"
 
         date_pick.setOnClickListener {
             DatePickerDialog(this,
@@ -79,10 +81,17 @@ class EditListActivity : AppCompatActivity() {
         list.let {
             it.month = mon
             it.day = day
-            it.comment = comment
+            it.comment = when(pri) {
+                0 -> comment
+                1 -> "!$comment"
+                2 -> "!!$comment"
+                3 -> "!!!$comment"
+                else -> comment
+            }
             it.done = done
             Log.e("selected", "${checkBoxEdit.isSelected} " )
             it.pri = pri
+            it.date = today
         }
         thread {
             val listDao = AppDatabase.getDatabase(this).listDao()

@@ -20,7 +20,9 @@ class CheckActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check)
         initCalendar()
-
+        back.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun initCalendar() {
@@ -47,5 +49,8 @@ class CheckActivity : AppCompatActivity() {
         }
         calendar.addDecorators(DayAccent(list))
         calendar.selectionMode = MaterialCalendarView.SELECTION_MODE_NONE
+
+        days.text = "已连续签到${dateSet.size}天"
+
     }
 }
