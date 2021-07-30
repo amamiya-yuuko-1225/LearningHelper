@@ -1,12 +1,16 @@
 package com.experiment.learinghelper.ui.me
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.experiment.learinghelper.R
+import kotlinx.android.synthetic.main.fragment_me.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,9 +36,54 @@ class MeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_me, container, false)
+
         meViewModel =
             ViewModelProviders.of(this).get(MeViewModel::class.java)
+
+        val view1 = inflater.inflate(R.layout.me_myquestions, null)
+        val view2 = inflater.inflate(R.layout.me_message, null)
+        val pageview = ArrayList<View>()
+
+        pageview.add(view1)
+        pageview.add(view2)
+        val mPagerAdapter: PagerAdapter = object : PagerAdapter() {
+            //获取当前窗体界面数
+            override fun getCount(): Int {
+                // TODO Auto-generated method stub
+                return pageview.size
+            }
+
+            //判断是否由对象生成界面
+            override fun isViewFromObject(arg0: View, arg1: Any): Boolean {
+                // TODO Auto-generated method stub
+                return arg0 === arg1
+            }
+
+            //使从ViewGroup中移出当前View
+            override fun destroyItem(arg0: View, arg1: Int, arg2: Any) {
+                (arg0 as ViewPager).removeView(pageview.get(arg1))
+            }
+
+            //返回一个对象，这个对象表明了PagerAdapter适配器选择哪个对象放在当前的ViewPager中
+            override fun instantiateItem(arg0: View, arg1: Int): Any {
+                (arg0 as ViewPager).addView(pageview.get(arg1))
+                return pageview.get(arg1)
+            }
+        }
+        //绑定适配器
+        viewPager.adapter = mPagerAdapter
+        //设置viewPager的初始界面为第一个界面
+        viewPager.currentItem = 0
+
+        me_question.setOnClickListener {
+            viewPager.currentItem = 0
+        }
+
+        me_message.setOnClickListener {
+            viewPager.currentItem = 1
+        }
+
+        return inflater.inflate(R.layout.fragment_me, container, false)
     }
 
     companion object {
