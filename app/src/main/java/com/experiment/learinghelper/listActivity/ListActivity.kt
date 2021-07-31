@@ -24,6 +24,7 @@ class ListActivity : AppCompatActivity() {
         initUI()
     }
     private fun initUI() {
+        //supportActionBar!!.hide()
         initList()
         add.setOnClickListener {
             startActivityForResult(Intent(this,EditListActivity::class.java)

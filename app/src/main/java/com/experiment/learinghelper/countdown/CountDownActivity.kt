@@ -12,6 +12,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
+import com.experiment.learinghelper.MainActivity
 import com.experiment.learinghelper.R
 import com.experiment.learinghelper.database.AppDatabase
 import kotlinx.android.synthetic.main.activity_count_down.*
@@ -25,6 +26,11 @@ class CountDownActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_count_down)
+
+        back.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
         var succeededClocks = 0
         var failedClocks = 0
@@ -68,18 +74,22 @@ class CountDownActivity : AppCompatActivity() {
         valueAnimator.doOnEnd {
             if (countDownView.timeLeft == 0){
                 Toast.makeText(applicationContext, "成功完成", Toast.LENGTH_SHORT).show()
+                count_down_button.setImageResource(R.drawable.doing)
+                status_text_view.text = "计时中"
                 succeededClocks += 1
                 number_of_tasks.text = succeededClocks.toString()
                 thread {
-                    val clock = Clock(subTotalTime, true, year, month, day)
+                    val clock = Clock(totalTime, true, year, month, day)
                     clockDao.insertCock(clock)
                 }
             }else{
                 Toast.makeText(applicationContext, "任务放弃", Toast.LENGTH_SHORT).show()
+                count_down_button.setImageResource(R.drawable.start)
+                status_text_view.text = "未开始计时"
                 failedClocks += 1
                 number_of_tasks_failed.text = failedClocks.toString()
                 thread {
-                    val clock = Clock(subTotalTime, false, year, month, day)
+                    val clock = Clock(totalTime, false, year, month, day)
                     clockDao.insertCock(clock)
                 }
             }
@@ -89,10 +99,12 @@ class CountDownActivity : AppCompatActivity() {
         count_down_button.setOnClickListener {
             if (isLearning){
                 count_down_button.setImageResource(R.drawable.start)
+                status_text_view.text = "未开始计时"
                 isLearning = false
                 valueAnimator.end()
             }else{
                 count_down_button.setImageResource(R.drawable.doing)
+                status_text_view.text = "计时中"
                 isLearning = true
                 valueAnimator.start()
             }

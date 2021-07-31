@@ -1,17 +1,23 @@
 package com.experiment.learinghelper.daily
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.experiment.learinghelper.MainActivity
 import com.experiment.learinghelper.R
 import com.experiment.learinghelper.countdown.Clock
 import com.experiment.learinghelper.database.AppDatabase
 import com.experiment.learinghelper.listActivity.DailyListAdapter
 import com.experiment.learinghelper.listActivity.ListData
+import kotlinx.android.synthetic.main.activity_count_down.*
 import kotlinx.android.synthetic.main.activity_daily.*
+import kotlinx.android.synthetic.main.activity_daily.back
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
@@ -23,6 +29,11 @@ class DailyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily)
+        back.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
         val clockDao = AppDatabase.getDatabase(this).clockDao()
         val listDao = AppDatabase.getDatabase(this).listDao()
         val calendar = Calendar.getInstance()
@@ -64,7 +75,10 @@ class DailyActivity : AppCompatActivity() {
 
                         var adapter1 = DailyListAdapter(listsDoneToday)
                         var adapter2 = DailyListAdapter(listaUndoToday)
+
+                        daily_finished_list_view.layoutManager = LinearLayoutManager(applicationContext)
                         daily_finished_list_view.adapter = adapter1
+                        daily_failed_list_view.layoutManager = LinearLayoutManager(applicationContext)
                         daily_failed_list_view.adapter = adapter2
                     }
                 }

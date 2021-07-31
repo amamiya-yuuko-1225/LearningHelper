@@ -1,15 +1,19 @@
 package com.experiment.learinghelper.weekly
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import androidx.appcompat.app.AppCompatActivity
+import com.experiment.learinghelper.MainActivity
 import com.experiment.learinghelper.R
 import com.experiment.learinghelper.countdown.Clock
 import com.experiment.learinghelper.database.AppDatabase
+import kotlinx.android.synthetic.main.activity_count_down.*
 import kotlinx.android.synthetic.main.activity_weekly.*
+import kotlinx.android.synthetic.main.activity_weekly.back
 import lecho.lib.hellocharts.model.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -23,6 +27,10 @@ class WeeklyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weekly)
+        back.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
         val clockDao = AppDatabase.getDatabase(this).clockDao()
         val calendar = Calendar.getInstance()
         var day = calendar.get(Calendar.DAY_OF_MONTH)

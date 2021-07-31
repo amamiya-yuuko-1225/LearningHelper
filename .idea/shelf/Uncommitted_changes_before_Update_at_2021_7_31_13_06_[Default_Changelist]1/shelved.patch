@@ -1,0 +1,18 @@
+Index: app/src/main/java/com/experiment/learinghelper/listActivity/ListActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.experiment.learinghelper.listActivity\r\n\r\nimport android.app.Activity\r\nimport android.content.Intent\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport android.util.Log\r\nimport androidx.recyclerview.widget.LinearLayoutManager\r\nimport androidx.recyclerview.widget.RecyclerView\r\nimport com.experiment.learinghelper.R\r\nimport com.experiment.learinghelper.database.AppDatabase\r\nimport kotlinx.android.synthetic.main.activity_list.*\r\nimport kotlin.concurrent.thread\r\n\r\nclass ListActivity : AppCompatActivity() {\r\n    private lateinit var listDao:ListDao\r\n    private lateinit var listUndo:MutableList<ListData>\r\n    private lateinit var listDone:MutableList<ListData>\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_list)\r\n        listDao = AppDatabase.getDatabase(this).listDao()\r\n        initUI()\r\n    }\r\n    private fun initUI() {\r\n        supportActionBar!!.hide()\r\n        initList()\r\n        add.setOnClickListener {\r\n            startActivityForResult(Intent(this,EditListActivity::class.java)\r\n                ,1)\r\n        }\r\n    }\r\n\r\n    private fun initList() {\r\n        thread {\r\n            listUndo = listDao.selectUndo() as MutableList<ListData>\r\n            listDone = listDao.selectDone() as MutableList<ListData>\r\n            Log.e(\"room\", \"initListUndo:${listUndo.size} \" )\r\n            Log.e(\"room\", \"initListDone:${listDone.size} \" )\r\n            recyclerView_listUndo.let {\r\n                it.layoutManager = LinearLayoutManager(this)\r\n                it.adapter = ListAdapter(listUndo,listDao,false)\r\n                Log.e(\"undo\", \"${it.adapter!!.itemCount}\")\r\n            }\r\n            recyclerView_listDone.let {\r\n                it.layoutManager = LinearLayoutManager(this)\r\n                it.adapter = ListAdapter(listDone,listDao,true)\r\n            }\r\n        }\r\n    }\r\n\r\n    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {\r\n        super.onActivityResult(requestCode, resultCode, data)\r\n        when(requestCode) {\r\n            1 -> if(resultCode == Activity.RESULT_OK) {\r\n                val list = data!!.getSerializableExtra(\"list\") as ListData\r\n                if(list.done) {\r\n                    listDone.add(list)\r\n                    recyclerView_listDone.adapter!!.notifyDataSetChanged()\r\n                } else {\r\n                    listUndo.add(list)\r\n                    recyclerView_listUndo.adapter!!.notifyDataSetChanged()\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/experiment/learinghelper/listActivity/ListActivity.kt	(revision ec0b8b32012338d51c7615af186c478a1f845762)
++++ app/src/main/java/com/experiment/learinghelper/listActivity/ListActivity.kt	(date 1627702779674)
+@@ -24,7 +24,7 @@
+         initUI()
+     }
+     private fun initUI() {
+-        supportActionBar!!.hide()
++        //supportActionBar!!.hide()
+         initList()
+         add.setOnClickListener {
+             startActivityForResult(Intent(this,EditListActivity::class.java)

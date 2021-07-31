@@ -83,7 +83,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="次数" />
+                    android:text="专注时长" />
 
                 <TextView
                     android:id="@+id/weekly_time"

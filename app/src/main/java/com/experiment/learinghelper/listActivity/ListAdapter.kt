@@ -30,7 +30,7 @@ class ListAdapter(private val list:List<ListData>,private val listDao: ListDao,p
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
-        holder.date.text = "${item.month}月${item.day}日"
+        holder.date.text = "${item.month+1}月${item.day}日"
         holder.title.text = item.comment
         if(done) {
             holder.mCheckBox.isEnabled = false

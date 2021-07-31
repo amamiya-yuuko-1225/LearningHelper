@@ -1,0 +1,432 @@
+Index: app/src/main/java/com/experiment/learinghelper/ui/home/HomeFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.experiment.learinghelper.ui.home\r\n\r\nimport android.content.Context\r\nimport android.content.Intent\r\nimport android.os.Bundle\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport androidx.fragment.app.Fragment\r\nimport com.experiment.learinghelper.ChoosingGradeActivity\r\nimport com.experiment.learinghelper.R\r\nimport kotlinx.android.synthetic.main.fragment_home.*\r\n\r\nclass HomeFragment : Fragment() {\r\n\r\n    override fun onCreateView(\r\n            inflater: LayoutInflater,\r\n            container: ViewGroup?,\r\n            savedInstanceState: Bundle?\r\n    ): View? {\r\n        setGrade()\r\n        return inflater.inflate(R.layout.fragment_home, container, false)\r\n    }\r\n\r\n    private fun setGrade() {\r\n        grade.text = when( requireActivity().getSharedPreferences(\r\n            \"grade\", Context.MODE_PRIVATE).getInt(\"grade\",1)) {\r\n            1 -> \"大一\"\r\n            2 -> \"大二\"\r\n            3 -> \"大三\"\r\n            4 -> \"大四\"\r\n            5 -> \"研一\"\r\n            6 -> \"研二\"\r\n            7 -> \"研三\"\r\n            else -> \"大一\"\r\n        }\r\n        grade.setOnClickListener {\r\n            startActivity(Intent(activity,ChoosingGradeActivity::class.java))\r\n        }\r\n    }\r\n\r\n    override fun onResume() {\r\n        setGrade()\r\n        super.onResume()\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/experiment/learinghelper/ui/home/HomeFragment.kt	(revision ec0b8b32012338d51c7615af186c478a1f845762)
++++ app/src/main/java/com/experiment/learinghelper/ui/home/HomeFragment.kt	(date 1627703145766)
+@@ -6,9 +6,14 @@
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
++import android.widget.Button
+ import androidx.fragment.app.Fragment
+ import com.experiment.learinghelper.ChoosingGradeActivity
+ import com.experiment.learinghelper.R
++import com.experiment.learinghelper.countdown.CountDownActivity
++import com.experiment.learinghelper.countdown.CountDownView
++import com.experiment.learinghelper.daily.DailyActivity
++import com.experiment.learinghelper.weekly.WeeklyActivity
+ import kotlinx.android.synthetic.main.fragment_home.*
+ 
+ class HomeFragment : Fragment() {
+@@ -18,10 +23,35 @@
+             container: ViewGroup?,
+             savedInstanceState: Bundle?
+     ): View? {
+-        setGrade()
+         return inflater.inflate(R.layout.fragment_home, container, false)
+     }
+ 
++    override fun onActivityCreated(savedInstanceState: Bundle?) {
++        super.onActivityCreated(savedInstanceState)
++        setGrade()
++
++        val weekly = view?.findViewById<Button>(R.id.weekly_report)
++        weekly?.setOnClickListener {
++            val intent = Intent(context, WeeklyActivity::class.java)
++            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
++            context?.startActivity(intent)
++        }
++
++        val daily = view?.findViewById<Button>(R.id.daily_report)
++        daily?.setOnClickListener {
++            val intent = Intent(context, DailyActivity::class.java)
++            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
++            context?.startActivity(intent)
++        }
++
++        val tomatoClock = view?.findViewById<Button>(R.id.clock)
++        tomatoClock?.setOnClickListener {
++            val intent = Intent(context, CountDownActivity::class.java)
++            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
++            context?.startActivity(intent)
++        }
++    }
++
+     private fun setGrade() {
+         grade.text = when( requireActivity().getSharedPreferences(
+             "grade", Context.MODE_PRIVATE).getInt("grade",1)) {
+Index: app/src/main/java/com/experiment/learinghelper/ui/course/CourseFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.experiment.learinghelper.ui.course\r\n\r\nimport android.content.Context\r\nimport android.content.Intent\r\nimport android.os.Bundle\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport androidx.fragment.app.Fragment\r\nimport androidx.recyclerview.widget.GridLayoutManager\r\nimport com.experiment.learinghelper.ChoosingGradeActivity\r\nimport com.experiment.learinghelper.R\r\nimport kotlinx.android.synthetic.main.fragment_course.*\r\nimport kotlinx.android.synthetic.main.fragment_home.*\r\nimport kotlinx.android.synthetic.main.fragment_home.grade\r\n\r\nclass CourseFragment : Fragment() {\r\n\r\n    private lateinit var list:MutableList<Course>\r\n\r\n    override fun onCreateView(\r\n            inflater: LayoutInflater,\r\n            container: ViewGroup?,\r\n            savedInstanceState: Bundle?\r\n    ): View? {\r\n        setGrade()\r\n        initCourseData()\r\n        course.let {\r\n            it.layoutManager = GridLayoutManager(activity,3)\r\n            it.adapter = CourseAdapter(list,activity as Context)\r\n        }\r\n        return inflater.inflate(R.layout.fragment_course, container, false)\r\n    }\r\n\r\n    private fun setGrade() {\r\n        grade.text = when( requireActivity().getSharedPreferences(\r\n            \"grade\", Context.MODE_PRIVATE).getInt(\"grade\",1)) {\r\n            1 -> \"大一\"\r\n            2 -> \"大二\"\r\n            3 -> \"大三\"\r\n            4 -> \"大四\"\r\n            5 -> \"研一\"\r\n            6 -> \"研二\"\r\n            7 -> \"研三\"\r\n            else -> \"大一\"\r\n        }\r\n        grade.setOnClickListener {\r\n            startActivity(Intent(activity, ChoosingGradeActivity::class.java))\r\n        }\r\n    }\r\n\r\n    private fun initCourseData() {\r\n\r\n    }\r\n\r\n    override fun onResume() {\r\n        setGrade()\r\n        super.onResume()\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/experiment/learinghelper/ui/course/CourseFragment.kt	(revision ec0b8b32012338d51c7615af186c478a1f845762)
++++ app/src/main/java/com/experiment/learinghelper/ui/course/CourseFragment.kt	(date 1627703500915)
+@@ -6,8 +6,10 @@
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
++import android.widget.TextView
+ import androidx.fragment.app.Fragment
+ import androidx.recyclerview.widget.GridLayoutManager
++import androidx.recyclerview.widget.RecyclerView
+ import com.experiment.learinghelper.ChoosingGradeActivity
+ import com.experiment.learinghelper.R
+ import kotlinx.android.synthetic.main.fragment_course.*
+@@ -23,16 +25,38 @@
+             container: ViewGroup?,
+             savedInstanceState: Bundle?
+     ): View? {
+-        setGrade()
++        list = ArrayList()
++        val grade = view?.findViewById<TextView>(R.id.grade)
++        grade?.text = when( requireActivity().getSharedPreferences(
++            "grade", Context.MODE_PRIVATE).getInt("grade",1)) {
++            1 -> "大一"
++            2 -> "大二"
++            3 -> "大三"
++            4 -> "大四"
++            5 -> "研一"
++            6 -> "研二"
++            7 -> "研三"
++            else -> "大一"
++        }
++        if (grade != null) {
++            grade.setOnClickListener {
++                startActivity(Intent(activity, ChoosingGradeActivity::class.java))
++            }
++        }
+         initCourseData()
++        val course = view?.findViewById<RecyclerView>(R.id.course)
+         course.let {
+-            it.layoutManager = GridLayoutManager(activity,3)
+-            it.adapter = CourseAdapter(list,activity as Context)
++            it?.layoutManager = GridLayoutManager(activity,3)
++            it?.adapter = CourseAdapter(list,activity as Context)
+         }
+         return inflater.inflate(R.layout.fragment_course, container, false)
+     }
+ 
+-    private fun setGrade() {
++    private fun initCourseData() {
++
++    }
++
++    override fun onResume() {
+         grade.text = when( requireActivity().getSharedPreferences(
+             "grade", Context.MODE_PRIVATE).getInt("grade",1)) {
+             1 -> "大一"
+@@ -47,14 +71,6 @@
+         grade.setOnClickListener {
+             startActivity(Intent(activity, ChoosingGradeActivity::class.java))
+         }
+-    }
+-
+-    private fun initCourseData() {
+-
+-    }
+-
+-    override fun onResume() {
+-        setGrade()
+         super.onResume()
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.experiment.learinghelper\">\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/AppTheme\">\r\n        <activity android:name=\".listActivity.EditListActivity\" />\r\n        <activity android:name=\".listActivity.ListActivity\">\r\n        </activity>\r\n        <activity android:name=\".MyAccountActivity\" />\r\n        <activity android:name=\".LoginActivity\" />\r\n        <activity android:name=\".WelcomeActivity\" >\r\n\r\n        </activity>\r\n        <activity android:name=\".checkActivity.CheckActivity\" />\r\n        <activity android:name=\".ChoosingGradeActivity\" />\r\n        <activity\r\n            android:name=\".MainActivity\"\r\n            android:label=\"@string/app_name\" >\r\n        </activity>\r\n        <activity android:name=\".countdown.EditClockActivity\" />\r\n        <activity\r\n            android:name=\".countdown.CountDownActivity\"\r\n            android:theme=\"@style/theme1\">\r\n        </activity>\r\n        <activity\r\n            android:name=\".daily.DailyActivity\"\r\n            android:theme=\"@style/theme1\">\r\n        </activity>\r\n        <activity\r\n            android:name=\".weekly.WeeklyActivity\"\r\n            android:theme=\"@style/theme1\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision ec0b8b32012338d51c7615af186c478a1f845762)
++++ app/src/main/AndroidManifest.xml	(date 1627700699117)
+@@ -13,7 +13,9 @@
+         <activity android:name=".listActivity.ListActivity">
+         </activity>
+         <activity android:name=".MyAccountActivity" />
+-        <activity android:name=".LoginActivity" />
++        <activity android:name=".LoginActivity">
++
++        </activity>
+         <activity android:name=".WelcomeActivity" >
+ 
+         </activity>
+@@ -22,6 +24,11 @@
+         <activity
+             android:name=".MainActivity"
+             android:label="@string/app_name" >
++            <intent-filter>
++                <action android:name="android.intent.action.MAIN" />
++
++                <category android:name="android.intent.category.LAUNCHER" />
++            </intent-filter>
+         </activity>
+         <activity android:name=".countdown.EditClockActivity" />
+         <activity
+Index: app/src/main/res/layout/fragment_me.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".ui.home.HomeFragment\">\r\n\r\n    <ImageView\r\n        android:id=\"@+id/me_photo\"\r\n        android:layout_width=\"100dp\"\r\n        android:layout_height=\"100dp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.051\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.025\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/me_name\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"联创团队\"\r\n        android:textSize=\"20dp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.403\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.038\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/me_following\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"关注42 粉丝41\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.415\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.091\" />\r\n\r\n    <ImageButton\r\n        android:layout_width=\"100dp\"\r\n        android:layout_height=\"100dp\"\r\n        android:scaleType=\"fitCenter\"\r\n        android:src=\"@drawable/me_button1\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.106\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.226\" />\r\n\r\n    <TextView\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\" @我的\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.169\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.339\" />\r\n\r\n    <ImageButton\r\n        android:layout_width=\"100dp\"\r\n        android:layout_height=\"100dp\"\r\n        android:scaleType=\"fitCenter\"\r\n        android:src=\"@drawable/me_button2\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.877\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.225\" />\r\n\r\n    <TextView\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"回复\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.498\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.339\" />\r\n\r\n    <ImageButton\r\n        android:layout_width=\"100dp\"\r\n        android:layout_height=\"100dp\"\r\n        android:scaleType=\"fitCenter\"\r\n        android:src=\"@drawable/me_button3\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.498\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.225\" />\r\n\r\n    <TextView\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"点赞\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.814\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.339\" />\r\n\r\n    <LinearLayout\r\n        android:id=\"@+id/linearLayout\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"40dp\"\r\n        android:background=\"#FFFFFF\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.402\">\r\n\r\n        <!--layout_weight这个属性为权重，让两个textview平分这个linearLayout-->\r\n        <TextView\r\n            android:id=\"@+id/me_question\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_weight=\"1.0\"\r\n            android:gravity=\"center\"\r\n            android:text=\"我的提问\"\r\n            android:textColor=\"#000000\"\r\n            android:textSize=\"20dip\" />\r\n\r\n        <TextView\r\n            android:id=\"@+id/me_message\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_weight=\"1.0\"\r\n            android:gravity=\"center\"\r\n            android:text=\"消息\"\r\n            android:textColor=\"#000000\"\r\n            android:textSize=\"20dip\" />\r\n\r\n    </LinearLayout>\r\n\r\n    <androidx.viewpager.widget.ViewPager\r\n        android:id=\"@+id/viewPager\"\r\n        android:layout_width=\"414dp\"\r\n        android:layout_height=\"406dp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"1.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"1.0\">\r\n\r\n    </androidx.viewpager.widget.ViewPager>\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_me.xml	(revision ec0b8b32012338d51c7615af186c478a1f845762)
++++ app/src/main/res/layout/fragment_me.xml	(date 1627702386326)
+@@ -14,7 +14,7 @@
+         app:layout_constraintHorizontal_bias="0.051"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.025" />
++        app:layout_constraintVertical_bias="0.0" />
+ 
+     <TextView
+         android:id="@+id/me_name"
+@@ -51,7 +51,7 @@
+         app:layout_constraintHorizontal_bias="0.106"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.226" />
++        app:layout_constraintVertical_bias="0.172" />
+ 
+     <TextView
+         android:layout_width="wrap_content"
+@@ -62,7 +62,7 @@
+         app:layout_constraintHorizontal_bias="0.169"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.339" />
++        app:layout_constraintVertical_bias="0.293" />
+ 
+     <ImageButton
+         android:layout_width="100dp"
+@@ -71,10 +71,10 @@
+         android:src="@drawable/me_button2"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintHorizontal_bias="0.877"
++        app:layout_constraintHorizontal_bias="0.9"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.225" />
++        app:layout_constraintVertical_bias="0.172" />
+ 
+     <TextView
+         android:layout_width="wrap_content"
+@@ -85,7 +85,7 @@
+         app:layout_constraintHorizontal_bias="0.498"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.339" />
++        app:layout_constraintVertical_bias="0.293" />
+ 
+     <ImageButton
+         android:layout_width="100dp"
+@@ -97,7 +97,7 @@
+         app:layout_constraintHorizontal_bias="0.498"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.225" />
++        app:layout_constraintVertical_bias="0.172" />
+ 
+     <TextView
+         android:layout_width="wrap_content"
+@@ -105,10 +105,10 @@
+         android:text="点赞"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintHorizontal_bias="0.814"
++        app:layout_constraintHorizontal_bias="0.827"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.339" />
++        app:layout_constraintVertical_bias="0.293" />
+ 
+     <LinearLayout
+         android:id="@+id/linearLayout"
+@@ -120,7 +120,7 @@
+         app:layout_constraintHorizontal_bias="0.0"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.402">
++        app:layout_constraintVertical_bias="0.354">
+ 
+         <!--layout_weight这个属性为权重，让两个textview平分这个linearLayout-->
+         <TextView
+@@ -147,8 +147,8 @@
+ 
+     <androidx.viewpager.widget.ViewPager
+         android:id="@+id/viewPager"
+-        android:layout_width="414dp"
+-        android:layout_height="406dp"
++        android:layout_width="match_parent"
++        android:layout_height="445dp"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="1.0"
+Index: app/src/main/java/com/experiment/learinghelper/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.experiment.learinghelper\r\n\r\nimport android.content.Context\r\nimport android.content.Intent\r\nimport android.os.Bundle\r\nimport android.util.Log\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport androidx.navigation.findNavController\r\nimport androidx.navigation.ui.AppBarConfiguration\r\nimport androidx.navigation.ui.setupActionBarWithNavController\r\nimport androidx.navigation.ui.setupWithNavController\r\nimport com.experiment.learinghelper.countdown.CountDownActivity\r\nimport com.experiment.learinghelper.daily.DailyActivity\r\nimport com.experiment.learinghelper.listActivity.DailyListAdapter\r\nimport com.experiment.learinghelper.weekly.WeeklyActivity\r\nimport com.google.android.material.bottomnavigation.BottomNavigationView\r\nimport kotlinx.android.synthetic.main.fragment_home.*\r\n\r\n\r\nclass MainActivity : AppCompatActivity() {\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_main)\r\n        initUI()\r\n    }\r\n    private fun initUI() {\r\n        actionBar!!.hide()\r\n        setNav()\r\n        weekly_report.setOnClickListener {\r\n            val intent = Intent(this, WeeklyActivity::class.java)\r\n            startActivity(intent)\r\n        }\r\n\r\n        clock.setOnClickListener {\r\n            val intent = Intent(this, CountDownActivity::class.java)\r\n            startActivity(intent)\r\n        }\r\n\r\n        daily_report.setOnClickListener {\r\n            val intent = Intent(this, DailyActivity::class.java)\r\n            startActivity(intent)\r\n        }\r\n    }\r\n     private fun setNav() {\r\n         val navView: BottomNavigationView = findViewById(R.id.nav_view)\r\n         val navController = findNavController(R.id.nav_host_fragment)\r\n         val appBarConfiguration = AppBarConfiguration(setOf(\r\n             R.id.navigation_home, R.id.navigation_course, R.id.navigation_question,R.id.navigation_me))\r\n         setupActionBarWithNavController(navController, appBarConfiguration)\r\n         navView.setupWithNavController(navController)\r\n     }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/experiment/learinghelper/MainActivity.kt	(revision ec0b8b32012338d51c7615af186c478a1f845762)
++++ app/src/main/java/com/experiment/learinghelper/MainActivity.kt	(date 1627702578511)
+@@ -22,34 +22,15 @@
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+         setContentView(R.layout.activity_main)
+-        initUI()
+-    }
+-    private fun initUI() {
+-        actionBar!!.hide()
+-        setNav()
+-        weekly_report.setOnClickListener {
+-            val intent = Intent(this, WeeklyActivity::class.java)
+-            startActivity(intent)
+-        }
+ 
+-        clock.setOnClickListener {
+-            val intent = Intent(this, CountDownActivity::class.java)
+-            startActivity(intent)
+-        }
+-
+-        daily_report.setOnClickListener {
+-            val intent = Intent(this, DailyActivity::class.java)
+-            startActivity(intent)
+-        }
+-    }
+-     private fun setNav() {
+-         val navView: BottomNavigationView = findViewById(R.id.nav_view)
+-         val navController = findNavController(R.id.nav_host_fragment)
+-         val appBarConfiguration = AppBarConfiguration(setOf(
+-             R.id.navigation_home, R.id.navigation_course, R.id.navigation_question,R.id.navigation_me))
+-         setupActionBarWithNavController(navController, appBarConfiguration)
+-         navView.setupWithNavController(navController)
+-     }
++        //actionBar!!.hide()
++        val navView: BottomNavigationView = findViewById(R.id.nav_view)
++        val navController = findNavController(R.id.nav_host_fragment)
++        val appBarConfiguration = AppBarConfiguration(setOf(
++            R.id.navigation_home, R.id.navigation_course, R.id.navigation_question,R.id.navigation_me))
++        setupActionBarWithNavController(navController, appBarConfiguration)
++        navView.setupWithNavController(navController)
++    }
+ 
+ 
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/experiment/learinghelper/ui/me/MeFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.experiment.learinghelper.ui.me\r\n\r\nimport android.os.Bundle\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport androidx.fragment.app.Fragment\r\nimport androidx.lifecycle.ViewModelProviders\r\nimport androidx.viewpager.widget.PagerAdapter\r\nimport androidx.viewpager.widget.ViewPager\r\nimport com.experiment.learinghelper.R\r\nimport kotlinx.android.synthetic.main.fragment_me.*\r\n\r\n\r\n// TODO: Rename parameter arguments, choose names that match\r\n// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER\r\nprivate const val ARG_PARAM1 = \"param1\"\r\nprivate const val ARG_PARAM2 = \"param2\"\r\n\r\nclass MeFragment : Fragment() {\r\n    // TODO: Rename and change types of parameters\r\n    private var param1: String? = null\r\n    private var param2: String? = null\r\n    private lateinit var meViewModel: MeViewModel;\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        arguments?.let {\r\n            param1 = it.getString(ARG_PARAM1)\r\n            param2 = it.getString(ARG_PARAM2)\r\n        }\r\n    }\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater, container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        // Inflate the layout for this fragment\r\n\r\n        meViewModel =\r\n            ViewModelProviders.of(this).get(MeViewModel::class.java)\r\n\r\n        val view1 = inflater.inflate(R.layout.me_myquestions, null)\r\n        val view2 = inflater.inflate(R.layout.me_message, null)\r\n        val pageview = ArrayList<View>()\r\n\r\n        pageview.add(view1)\r\n        pageview.add(view2)\r\n        val mPagerAdapter: PagerAdapter = object : PagerAdapter() {\r\n            //获取当前窗体界面数\r\n            override fun getCount(): Int {\r\n                // TODO Auto-generated method stub\r\n                return pageview.size\r\n            }\r\n\r\n            //判断是否由对象生成界面\r\n            override fun isViewFromObject(arg0: View, arg1: Any): Boolean {\r\n                // TODO Auto-generated method stub\r\n                return arg0 === arg1\r\n            }\r\n\r\n            //使从ViewGroup中移出当前View\r\n            override fun destroyItem(arg0: View, arg1: Int, arg2: Any) {\r\n                (arg0 as ViewPager).removeView(pageview.get(arg1))\r\n            }\r\n\r\n            //返回一个对象，这个对象表明了PagerAdapter适配器选择哪个对象放在当前的ViewPager中\r\n            override fun instantiateItem(arg0: View, arg1: Int): Any {\r\n                (arg0 as ViewPager).addView(pageview.get(arg1))\r\n                return pageview.get(arg1)\r\n            }\r\n        }\r\n        //绑定适配器\r\n        viewPager.adapter = mPagerAdapter\r\n        //设置viewPager的初始界面为第一个界面\r\n        viewPager.currentItem = 0\r\n\r\n        me_question.setOnClickListener {\r\n            viewPager.currentItem = 0\r\n        }\r\n\r\n        me_message.setOnClickListener {\r\n            viewPager.currentItem = 1\r\n        }\r\n\r\n        return inflater.inflate(R.layout.fragment_me, container, false)\r\n    }\r\n\r\n    companion object {\r\n        /**\r\n         * Use this factory method to create a new instance of\r\n         * this fragment using the provided parameters.\r\n         *\r\n         * @param param1 Parameter 1.\r\n         * @param param2 Parameter 2.\r\n         * @return A new instance of fragment MeFragment.\r\n         */\r\n        // TODO: Rename and change types and number of parameters\r\n        @JvmStatic\r\n        fun newInstance(param1: String, param2: String) =\r\n            MeFragment().apply {\r\n                arguments = Bundle().apply {\r\n                    putString(ARG_PARAM1, param1)\r\n                    putString(ARG_PARAM2, param2)\r\n                }\r\n            }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/experiment/learinghelper/ui/me/MeFragment.kt	(revision ec0b8b32012338d51c7615af186c478a1f845762)
++++ app/src/main/java/com/experiment/learinghelper/ui/me/MeFragment.kt	(date 1627702258733)
+@@ -1,14 +1,22 @@
+ package com.experiment.learinghelper.ui.me
+ 
++import android.content.Context
++import android.content.Intent
+ import android.os.Bundle
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
++import android.widget.Button
++import androidx.core.content.ContextCompat.getSystemService
+ import androidx.fragment.app.Fragment
+ import androidx.lifecycle.ViewModelProviders
+ import androidx.viewpager.widget.PagerAdapter
+ import androidx.viewpager.widget.ViewPager
+ import com.experiment.learinghelper.R
++import com.experiment.learinghelper.countdown.CountDownActivity
++import com.experiment.learinghelper.daily.DailyActivity
++import com.experiment.learinghelper.weekly.WeeklyActivity
++import kotlinx.android.synthetic.main.fragment_home.*
+ import kotlinx.android.synthetic.main.fragment_me.*
+ 
+ 
+@@ -31,17 +39,41 @@
+         }
+     }
+ 
++    override fun onActivityCreated(savedInstanceState: Bundle?) {
++        super.onActivityCreated(savedInstanceState)
++
++    }
++
+     override fun onCreateView(
+         inflater: LayoutInflater, container: ViewGroup?,
+         savedInstanceState: Bundle?
+     ): View? {
+-        // Inflate the layout for this fragment
+-
+         meViewModel =
+             ViewModelProviders.of(this).get(MeViewModel::class.java)
+ 
+-        val view1 = inflater.inflate(R.layout.me_myquestions, null)
+-        val view2 = inflater.inflate(R.layout.me_message, null)
++        val weekly_report = view?.findViewById<Button>(R.id.weekly_report)
++        weekly_report?.setOnClickListener {
++            val intent = Intent(context, WeeklyActivity::class.java)
++            startActivity(intent)
++        }
++
++        val clock = view?.findViewById<Button>(R.id.clock)
++        clock?.setOnClickListener {
++            val intent = Intent(context, CountDownActivity::class.java)
++            startActivity(intent)
++        }
++
++        val daily_report = view?.findViewById<Button>(R.id.daily_report)
++        daily_report?.setOnClickListener {
++            val intent = Intent(context, DailyActivity::class.java)
++            startActivity(intent)
++        }
++
++        val viewPager = view?.findViewById<ViewPager>(R.id.viewPager)
++
++        val inflater = this.layoutInflater
++        val view1 = inflater?.inflate(R.layout.me_myquestions, null)
++        val view2 = inflater?.inflate(R.layout.me_message, null)
+         val pageview = ArrayList<View>()
+ 
+         pageview.add(view1)
+@@ -71,17 +103,22 @@
+             }
+         }
+         //绑定适配器
+-        viewPager.adapter = mPagerAdapter
++        viewPager?.adapter = mPagerAdapter
+         //设置viewPager的初始界面为第一个界面
+-        viewPager.currentItem = 0
++        viewPager?.currentItem = 0
+ 
+-        me_question.setOnClickListener {
+-            viewPager.currentItem = 0
++        val me_question = view?.findViewById<Button>(R.id.me_question)
++        me_question?.setOnClickListener {
++            viewPager?.currentItem = 0
+         }
+ 
+-        me_message.setOnClickListener {
+-            viewPager.currentItem = 1
++        val me_message = view?.findViewById<Button>(R.id.me_message)
++        me_message?.setOnClickListener {
++            viewPager?.currentItem = 1
+         }
++
++
++
+ 
+         return inflater.inflate(R.layout.fragment_me, container, false)
+     }

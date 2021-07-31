@@ -1,14 +1,22 @@
 package com.experiment.learinghelper.ui.me
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.experiment.learinghelper.R
+import com.experiment.learinghelper.countdown.CountDownActivity
+import com.experiment.learinghelper.daily.DailyActivity
+import com.experiment.learinghelper.weekly.WeeklyActivity
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_me.*
 
 
@@ -31,17 +39,41 @@ class MeFragment : Fragment() {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-
         meViewModel =
             ViewModelProviders.of(this).get(MeViewModel::class.java)
 
-        val view1 = inflater.inflate(R.layout.me_myquestions, null)
-        val view2 = inflater.inflate(R.layout.me_message, null)
+        val weekly_report = view?.findViewById<Button>(R.id.weekly_report)
+        weekly_report?.setOnClickListener {
+            val intent = Intent(context, WeeklyActivity::class.java)
+            startActivity(intent)
+        }
+
+        val clock = view?.findViewById<Button>(R.id.clock)
+        clock?.setOnClickListener {
+            val intent = Intent(context, CountDownActivity::class.java)
+            startActivity(intent)
+        }
+
+        val daily_report = view?.findViewById<Button>(R.id.daily_report)
+        daily_report?.setOnClickListener {
+            val intent = Intent(context, DailyActivity::class.java)
+            startActivity(intent)
+        }
+
+        val viewPager = view?.findViewById<ViewPager>(R.id.viewPager)
+
+        val inflater = this.layoutInflater
+        val view1 = inflater?.inflate(R.layout.me_myquestions, null)
+        val view2 = inflater?.inflate(R.layout.me_message, null)
         val pageview = ArrayList<View>()
 
         pageview.add(view1)
@@ -71,17 +103,22 @@ class MeFragment : Fragment() {
             }
         }
         //绑定适配器
-        viewPager.adapter = mPagerAdapter
+        viewPager?.adapter = mPagerAdapter
         //设置viewPager的初始界面为第一个界面
-        viewPager.currentItem = 0
+        viewPager?.currentItem = 0
 
-        me_question.setOnClickListener {
-            viewPager.currentItem = 0
+        val me_question = view?.findViewById<Button>(R.id.me_question)
+        me_question?.setOnClickListener {
+            viewPager?.currentItem = 0
         }
 
-        me_message.setOnClickListener {
-            viewPager.currentItem = 1
+        val me_message = view?.findViewById<Button>(R.id.me_message)
+        me_message?.setOnClickListener {
+            viewPager?.currentItem = 1
         }
+
+
+
 
         return inflater.inflate(R.layout.fragment_me, container, false)
     }
@@ -105,4 +142,5 @@ class MeFragment : Fragment() {
                 }
             }
     }
+
 }
