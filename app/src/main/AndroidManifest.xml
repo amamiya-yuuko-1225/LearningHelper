@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".listActivity.EditListActivity" />
         <activity android:name=".listActivity.ListActivity">
+
         </activity>
         <activity android:name=".MyAccountActivity" />
         <activity android:name=".LoginActivity" />
@@ -21,7 +22,13 @@
         <activity android:name=".ChoosingGradeActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".countdown.EditClockActivity" />
         <activity
@@ -35,11 +42,6 @@
         <activity
             android:name=".weekly.WeeklyActivity"
             android:theme="@style/theme1">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
