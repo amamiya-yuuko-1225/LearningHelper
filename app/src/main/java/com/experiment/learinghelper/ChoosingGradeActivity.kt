@@ -1,15 +1,17 @@
 package com.experiment.learinghelper
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_choosing_grade.*
 
 class ChoosingGradeActivity : AppCompatActivity() {
-    private val editor = getSharedPreferences("grade", Context.MODE_PRIVATE).edit()
+    private lateinit var editor:SharedPreferences.Editor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choosing_grade)
+        editor = getSharedPreferences("grade", Context.MODE_PRIVATE).edit()
         freshman.setOnClickListener {
             editor.putInt("grade",1)
         }

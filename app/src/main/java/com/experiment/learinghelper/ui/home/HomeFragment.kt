@@ -60,6 +60,9 @@ class HomeFragment : Fragment() {
         list.setOnClickListener {
             startActivity(Intent(activity,ListActivity::class.java))
         }
+        grade_home.setOnClickListener {
+            startActivity(Intent(activity,ChoosingGradeActivity::class.java))
+        }
 
     }
     private fun setGrade() {
