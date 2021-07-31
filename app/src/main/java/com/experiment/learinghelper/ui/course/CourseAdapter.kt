@@ -26,6 +26,7 @@ class CourseAdapter(private val list:List<Course>,val context: Context):Recycler
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
+        holder.course.text = item.course
         holder.course.setOnClickListener {
             val intent = Intent()
             intent.action = "android.intent.action.VIEW"
