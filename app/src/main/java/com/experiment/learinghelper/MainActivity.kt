@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initUI()
     }
-    private fun initUI() { 
+    private fun initUI() {
         actionBar!!.hide()
         setNav()
         weekly_report.setOnClickListener {
